@@ -43,6 +43,9 @@ with open("repost_data.txt", "r", encoding="utf-8") as f:
 
     max_time = torch.max(time_data)
     time_data = time_data / max_time * 20
+    new_marker = marker_data[:, 0:5]
+    new_time = time_data[:, 0:5]
+    new_mask = mask_data[:, 0:5]
     torch.save(marker_data, "marker.pkl")
     torch.save(time_data, "time.pkl")
     torch.save(mask_data, "mask.pkl")
