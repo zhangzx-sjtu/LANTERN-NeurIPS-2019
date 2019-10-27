@@ -8,6 +8,7 @@ Source code for NeurIPS 2019 paper "Learning Latent Processes from High-Dimensio
 ## Datasets
 + The memetracker dataset can be downloaded from：https://snap.stanford.edu/data/memetracker9.html
 + The weibo dataset be doenloaded from: https://www.aminer.cn/influencelocality
++ Our great thanks to authors of the datasets.
 + Use data/#dataset#/preprocess.py to preprocess the downloaded dataset and you can get the .pkl files in each folder
 ## Quick Start
 To train on small datasets (Syn-Small and Memetracker), you can run
