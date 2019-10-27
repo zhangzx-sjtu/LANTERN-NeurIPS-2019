@@ -150,8 +150,6 @@ for j in range(args.epoches):
             g_optimizer.step()
             g_avg_loss += loss_g.item()
             batch_id += 1
-            if batch_id > 30:
-                break
 
         print("g_loss: " + str(g_avg_loss))
         logging.info("g_loss: " + str(g_avg_loss))
