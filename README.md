@@ -8,3 +8,7 @@ To train on small datasets (Syn-Small and Memetracker), you can run
 ```
 python train_small.py
 ```
+To train on large datasets (Syn-Large and Weibo), you can run
+```
+python train_large.py
+```
