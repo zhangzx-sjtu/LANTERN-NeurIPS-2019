@@ -12,3 +12,7 @@ To train on large datasets (Syn-Large and Weibo), you can run
 ```
 python train_large.py
 ```
+We also released our pre-trained model parameters for each dataset in /model folder. For a quick test, run
+```
+python test.py
+```
