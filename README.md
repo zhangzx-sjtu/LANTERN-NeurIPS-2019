@@ -4,7 +4,7 @@ Source code for NeurIPS 2019 paper "Learning Latent Processes from High-Dimensio
 + Python 3.5
 + PyTorch 1.0.1
 ## Requirements
-+ GPUs with at least 12GB memory
++ GPUs with 12GB memory
 ## Start
 To train on small datasets (Syn-Small and Memetracker), you can run
 ```
