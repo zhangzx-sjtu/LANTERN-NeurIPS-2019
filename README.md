@@ -6,6 +6,7 @@ Source code for NeurIPS 2019 paper "Learning Latent Processes from High-Dimensio
 ## Requirements
 + GPUs with 12GB memory
 ## Datasets
++ Use data_generate.py to generate the synthetic datasets
 + The memetracker dataset can be downloaded from：https://snap.stanford.edu/data/memetracker9.html
 + The weibo dataset be downloaded from: https://www.aminer.cn/influencelocality
 + Our great thanks to authors of the datasets.
