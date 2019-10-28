@@ -32,7 +32,7 @@ If you use this code as part of your research, please cite the following paper:
 @inproceedings{LANTERN-19,
   author    = {Qitian Wu and Zixuan Zhang and Xiaofeng Gao and Junchi Yan and
                Guihai Chen},
-  title     = {Learning Latent Process from High-DimensionalEvent Sequences via Efficient Sampling},
+  title     = {Learning Latent Process from High-Dimensional Event Sequences via Efficient Sampling},
   booktitle = {Thirty-third Conference on Neural Information Processing Systems, {NeurIPS} 2019, Vancouver, Canada,
                Dec 8-14, 2019},
   year      = {2019}
