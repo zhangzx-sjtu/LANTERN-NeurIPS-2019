@@ -11,6 +11,7 @@ Source code for NeurIPS 2019 paper "Learning Latent Processes from High-Dimensio
 + The weibo dataset be downloaded from: https://www.aminer.cn/influencelocality
 + Our great thanks to authors of the real-world datasets.
 + Use data/#dataset#/preprocess.py to preprocess the downloaded dataset and you can get the .pkl files in each folder
++ To check the statistics of each dataset, run cck.py in each folder, where you could also add lines of your own code to check the dataset.
 ## Quick Start
 To train on small datasets (Syn-Small and Memetracker), you can run
 ```
