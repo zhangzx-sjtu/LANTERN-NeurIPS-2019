@@ -9,9 +9,9 @@ from math import ceil
 
 parser = argparse.ArgumentParser()
 
-# device (compulsory)
+# device
 parser.add_argument('-cuda', default=0, type=int)
-# data (compulsory)
+# data
 parser.add_argument('-data', default='syn-large', type=str)
 parser.add_argument('-d_marker', default=100000, type=int)
 parser.add_argument('-d_cascade', default=100000, type=int)
@@ -24,7 +24,7 @@ parser.add_argument('-max_time', default=8, type=float)
 parser.add_argument('-embed_ratio', default=0.3, type=int)
 parser.add_argument('-sample', default=1, type=int)
 parser.add_argument("-model", default="main", type=str)
-# optimize (compulsory)
+# optimize
 parser.add_argument('-epoches', default=10000, type=int)
 parser.add_argument('-batch', default=512, type=int)
 parser.add_argument('-d_update', default=1, type=int)
@@ -35,14 +35,12 @@ parser.add_argument('-log_dir', default="main", type=str)
 parser.add_argument('-discount', default=0.99, type=float)
 parser.add_argument('-regular', default=0.001, type=float)
 parser.add_argument('-dropout', default=0.1, type=float)
-parser.add_argument('-lr', default=1e-3, type=float)
-parser.add_argument('-lr_g', default=1e-4, type=float)
+parser.add_argument('-lr_g', default=1e-5, type=float)
 parser.add_argument('-lr_d', default=1e-4, type=float)
 parser.add_argument('-seed', default=111, type=int)
-# evaluation(compulsory)
-# questionable
+# evaluation
 parser.add_argument('-neg_size', default=5, type=int)
-parser.add_argument('-pos_size', default=[30, 35, 40], type=list)
+parser.add_argument('-pos_size', default=[25, 30, 35], type=list)
 parser.add_argument('-test_sample', default=100, type=int)
 
 args = parser.parse_args()
