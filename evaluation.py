@@ -26,7 +26,7 @@ class Small_Network_Evaluator(object):
         output_matrix = model.generator.sample_linear_1(matrix)
         activated_out_matrix = model.generator.wc(output_matrix)
         final_matrix = model.generator.sample_linear_2(activated_out_matrix).squeeze(2).permute(1, 0)
-        output = final_matrix
+        output = torch.softmax(final_matrix, 1)
 
         for i in range(marker_num):
             for j in range(self.neg_size):
