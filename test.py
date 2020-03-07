@@ -77,7 +77,7 @@ if small:
 syn_small_adj_list = torch.load("data/" + dataset + "/adj_list.pkl")
 
 syn_small_main = MainModel(marker_num, 5, d_model, d_model, 2 * d_model, d_model, d_model, d_model, head, candi_size, max_time, 0.3, 0, 10, 0.99, 0.001, 0.1)
-syn_small_main.load_state_dict(torch.load("models/main-" + dataset + "-512.pt"))
+syn_small_main.load_state_dict(torch.load("model/main-" + dataset + "-512.pt"))
 
 syn_small_main.cpu().eval()
 if small:
