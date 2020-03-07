@@ -84,8 +84,8 @@ test_mask = mask_data[train_data_num:, :]
 d_set = TensorDataset(train_marker, train_time, train_mask)
 d_lder = DataLoader(d_set, shuffle=True, batch_size=args.batch)
 
-optimizer = torch.optim.Adam([{"params": network.marker_embeddings, "lr": args.lr},
-                              {"params": network.generator.parameters(), "lr": args.lr}], lr=args.lr, betas=[0.9, 0.99])
+optimizer = torch.optim.Adam([{"params": network.marker_embeddings, "lr": args.lr_g},
+                              {"params": network.generator.parameters(), "lr": args.lr_g}], lr=args.lr_g, betas=[0.9, 0.99])
 
 evaluator = Small_Network_Evaluator(args.d_marker, args.neg_size, args.test_sample, adj_mat)
 network.generator.sample_neighbors(network.marker_embeddings)
