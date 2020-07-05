@@ -60,7 +60,8 @@ class PolicyGradient(nn.Module):
             else:
                 target = target + torch.sum(dis_matrix * prob_output * rewards_detach * masks[i], 1)
                 regularization = regularization - self.regular * torch.sum(prob_output_detach * prob_output * masks[i], 1)
-
+        
+        target = target + regularization
         loss = - torch.mean(target)
         return loss
 
