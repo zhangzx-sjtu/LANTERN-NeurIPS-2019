@@ -36,6 +36,7 @@ class Generator(nn.Module):
         self.candidates = None
 
     def sample_neighbors(self, embedding):
+        print(embedding.shape)
         # Initialize descendants at the beginning of an epoch
         self.candidates = torch.multinomial(torch.ones(1, self.marker_num).cuda(self.cuda_id), self.candi_size)
         total_candidates = torch.stack([self.candidates[0] for _ in range(self.marker_num)], 0)
@@ -43,14 +44,15 @@ class Generator(nn.Module):
         current_matrix = torch.stack([sel_candi_embeds for _ in range(self.marker_num)], 0)
         total_matrix = torch.stack([embedding for _ in range(self.candi_size)], 1)
         matrix = torch.cat((current_matrix, total_matrix), 2)
-
+        print(matrix.shape)
+        
         output_matrix = self.sample_linear_1(matrix)
         activated_out_matrix = self.wc(output_matrix)
         final_matrix = self.sample_linear_2(activated_out_matrix).squeeze(2)
         prob_res = torch.softmax(final_matrix, 1)
         # Initialize descendants and probabilities
-        print(prob_res.size())
-        print(self.sample_size)
+#         print(prob_res.size())
+#         print(self.sample_size)
         neighbors = torch.multinomial(prob_res, self.sample_size)
         p_list = torch.gather(prob_res, 1, neighbors)
         self.neighbor_list = torch.gather(total_candidates, 1, neighbors)

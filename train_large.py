@@ -16,6 +16,7 @@ parser.add_argument('-data', default='syn-large', type=str)
 parser.add_argument('-d_marker', default=100000, type=int)
 parser.add_argument('-d_cascade', default=100000, type=int)
 # model
+parser.add_argument('-d_embed', default=16, type=int)
 parser.add_argument('-d_model', default=16, type=int)
 parser.add_argument('-neighbor', default=5, type=int)
 parser.add_argument('-d_inner', default=32, type=int)
@@ -24,6 +25,7 @@ parser.add_argument('-max_time', default=8, type=float)
 parser.add_argument('-embed_ratio', default=0.3, type=int)
 parser.add_argument('-sample', default=1, type=int)
 parser.add_argument("-model", default="main", type=str)
+parser.add_argument("-candi_size", default=100, type=int)
 # optimize
 parser.add_argument('-epoches', default=10000, type=int)
 parser.add_argument('-batch', default=512, type=int)
@@ -53,24 +55,24 @@ torch.manual_seed(args.seed)
 data_dir = "data/" + args.data + "/"
 
 if args.model == "main":
-    network = MainModel(args.d_marker, args.neighbor, args.d_model, args.d_inner, args.d_model,
-                        args.d_model, args.d_model, args.d_head, args.max_time, args.embed_ratio,
+    network = MainModel(args.d_marker, args.neighbor, args.d_embed, args.d_model, args.d_inner, args.d_model,
+                        args.d_model, args.d_model, args.d_head, args.candi_size, args.max_time, args.embed_ratio,
                         args.cuda, args.sample, args.discount, args.regular, dropout=args.dropout).cuda(args.cuda)
 if args.model == "pr":
-    network = PR_Model(args.d_marker, args.neighbor, args.d_model, args.d_inner, args.d_model,
-                       args.d_model, args.d_model, args.d_head, args.max_time, args.embed_ratio,
+    network = PR_Model(args.d_marker, args.neighbor, args.d_embed, args.d_model, args.d_inner, args.d_model,
+                       args.d_model, args.d_model, args.d_head, args.candi_size, args.max_time, args.embed_ratio,
                        args.cuda, args.sample, args.discount, args.regular, dropout=args.dropout).cuda(args.cuda)
 
 if args.model == "rnn":
-    network = RNN_Model(args.d_marker, args.neighbor, args.d_model, args.max_time, args.embed_ratio, args.cuda,
-                        args.sample, args.discount, args.regular, dropout=args.dropout).cuda(args.cuda)
+    network = RNN_Model(args.d_marker, args.neighbor, args.d_embed, args.d_model, args.candi_size, args.max_time,
+                        args.embed_ratio, args.cuda, args.sample, args.discount, args.regular, dropout=args.dropout).cuda(args.cuda)
 
-network.generator.sample_linear.cpu()
 
 marker_data = torch.load(data_dir + "marker.pkl").cuda(args.cuda)
 time_data = torch.load(data_dir + "time.pkl").cuda(args.cuda)
 mask_data = torch.load(data_dir + "mask.pkl").cuda(args.cuda)
 adj_list = torch.load(data_dir + "adj_list.pkl")
+
 
 train_data_num = int(args.d_cascade / 10 * 9)
 
@@ -85,7 +87,8 @@ test_mask = mask_data[train_data_num:, :]
 d_set = TensorDataset(train_marker, train_time, train_mask)
 d_lder = DataLoader(d_set, shuffle=True, batch_size=args.batch)
 
-evaluator = Large_Network_Evaluator(args.d_marker, args.neg_size, args.test_sample, adj_list, 1)
+evaluator = Large_Network_Evaluator(args.d_marker, args.neg_size, args.test_sample, adj_list)
+network.generator.sample_neighbors(network.marker_embeddings)
 
 # Training and Testing
 max_p, max_r, max_f1 = 0, 0, 0
@@ -118,7 +121,7 @@ for j in range(args.epoches):
 
             for batch_marker, batch_time, batch_mask in d_lder:
                 print("Batch ID: " + str(batch_id + 1) + "/" + str(batch_num))
-                loss_d, loss_g = network.forward(batch_marker, batch_time, batch_mask, 1)
+                loss_d, loss_g = network.forward(batch_marker, batch_time, batch_mask)
                 d_optimizer.zero_grad()
                 loss_d.backward()
                 d_optimizer.step()
@@ -139,9 +142,9 @@ for j in range(args.epoches):
 
         for batch_marker, batch_time, batch_mask in d_lder:
             if args.model != "pr":
-                loss_d, loss_g = network.forward(batch_marker, batch_time, batch_mask, 1)
+                loss_d, loss_g = network.forward(batch_marker, batch_time, batch_mask)
             else:
-                loss_g = network.forward(batch_marker, batch_time, batch_mask, 0)
+                loss_g = network.forward(batch_marker, batch_time, batch_mask)
             print("Batch ID: " + str(batch_id + 1) + "/" + str(batch_num))
             g_optimizer.zero_grad()
             loss_g.backward(retain_graph=True)
